@@ -1,17 +1,34 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class email {
 
 
 
     private final String remitent = "owner@bugs.debian.org";
 
-    private String bug = "<unknow>";
-    private String[] emailDestinataris = {"<unknow>"};
-    private String[] nomDestinataris = {"<unknow>"};
-    private String[] paquets = {"<unknow>"};
+    private String bug;
+    private List<String> emailDestinataris;
+    private List<String> nomDestinataris;
+    private List<String> paquets;
+
+
+
+
+    public email(){
+        this.bug = "unknow";
+        this.emailDestinataris = new ArrayList<>();
+        this.nomDestinataris = new ArrayList<>();
+        this.paquets = new ArrayList<>();
+    }
+
+
 
 
 
     public String composaEmail() {
+
+
 
         String textmail = "From: " + this.remitent +"\n"+
                 "To: " + pinta(emailDestinataris) + "\n" +
@@ -25,13 +42,15 @@ public class email {
     }
 
 
-    public String pinta(String [] c){
-        String cadena = "";
-        for (String d : c) {
-            cadena = cadena.concat(" ").concat(d);
+    public String pintaArray(List<String> llista){
+        for (String ll: llista) {
+            ll
         }
         return cadena;
     }
+
+
+
 
 
 
@@ -47,7 +66,9 @@ public class email {
         {
             return false;
         }else {
+
             preparat = true;
+
         }
 
         return preparat;

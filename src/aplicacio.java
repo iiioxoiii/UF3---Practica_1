@@ -28,23 +28,82 @@ public class aplicacio {
 
         //2)Es comprova que el bug existeix. Si no, escriu missatge error
         if(paquets[0].equals("<unknow>")){
-            //escriuFileERROR("Bug no trobat");
+
+            System.out.println("404 - Bug no trobat");
+
         }else{
 
-            for (String paquet: paquets) {
-               // cercaDadesMainer(paquet);
-            }
+            //3)Es passa l'objecte BugId al email
+            e.setBug(BugId);
+
+            //4)Es cerquen els paquets associats al BugId
+            e.setPaquets(retornaPaquets(paquets[1]));
+
+            //5)S'acaba de construir l'objecte amb els emails i noms dels
+            // paquets passat
+            pushEmailsAndNoms(e.getPaquets());
+
         }
 
-        //2)Si el bug existeix es cerquen els administradors dels paquets el l'altre
-        //fitxer.
 
     }
 
 
+    public pushEmailsAndNoms(String [] paquets) {
+
+        File file = new File (this.ruta_packageMaintainer);
+
+        try{
+
+            BufferedReader br = new  BufferedReader(new FileReader(file));
+
+            boolean trobat = false;
+
+
+
+            while (br.ready() || !trobat) {
+                String linia = br.readLine();
+                linia = linia.replaceAll("\\s+","");
+                String [] dades =linia.split(";");
+
+                for (String p: paquets){
+                    if(p.equals(dades[0])){
+                        //agafaElsNomsDelaLinia();
+                        //agafaElsEmailsDelaLinia();
+                    }
+                }
+            }
+
+            br.close();
+
+            return nomPaquets;
+
+        }catch (IOException e){
+            System.out.println("Error en accés al fitxer");
+            e.printStackTrace();
+        }
+
+        return nomPaquets;
+
+    }
+
+
+
+
+
+    public String [] retornaPaquets(String linia){
+
+        linia = linia.replaceAll("\\s+","");
+        String[] paquets = linia.split(",");
+
+        return paquets;
+    }
+
+
+
     /**Cerca en rcBugPackage si hi ha una incidència amb el número passat com argument
      * d'entrada. En el cas de no haver cap línia refenciada retorna un sol element
-     * anomenat"<unkow>"
+     * anomenat <unknow>
      * @param numBug el número de bug
      * @return un array amb els noms dels paquets refenciats
      */
@@ -112,40 +171,4 @@ public class aplicacio {
     }
 
 
-
-
-    public static int countLines(String filename) throws IOException {
-        LineNumberReader reader  = new LineNumberReader(new FileReader(filename));
-        int cnt = 0;
-        String lineRead = "";
-        while ((lineRead = reader.readLine()) != null) {}
-
-        cnt = reader.getLineNumber();
-        reader.close();
-        return cnt;
-    }
-
-
-
-
-
-
-
-
-
-/*
-    public void cerca(String fromUser, String MaintainerEmail, String packageName, String bug){
-
-
-
-        From: owner@bugs.debian.org
-        To: maintainerEmail [, maintainerEmail2, ...]
-        Dear maintainerName, [ maintainerName2, ...]
-        You have a new bug:
-        packageName [, packageName2, ...] - RC bug number #bugId
-        Please, fix it as soon as possible.
-                Cheers.
-
-    }
-*/
 }
