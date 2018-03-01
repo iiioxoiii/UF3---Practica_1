@@ -33,25 +33,6 @@ public class email {
         return cadena;
     }
 
-    public String pintaNomsDestinataris(){
-        String eDest = "";
-        for (String d : this.emailDestinataris) {
-            eDest = eDest.concat(" ").concat(d);
-        }
-        return eDest;
-    }
-
-
-    public String pintaPaquets(){
-        String paquets = "";
-        for (String d : this.paquets) {
-            paquets = paquets.concat(" ").concat(d);
-        }
-        return paquets;
-    }
-
-
-
 
 
     public boolean mailValidat() {
@@ -59,7 +40,8 @@ public class email {
         boolean preparat = false;
 
         if (this.remitent.equals("<unknow>") ||
-                this.destinataris[0].equals("<unknow>") ||
+                this.emailDestinataris[0].equals("<unknow>") ||
+                this.nomDestinataris[0].equals("<unknow>") ||
                 this.paquets[0].equals("<unknow>") ||
                 this.bug.equals("<unknow>"))
         {
