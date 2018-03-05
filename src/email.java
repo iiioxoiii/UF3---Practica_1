@@ -1,3 +1,7 @@
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +23,25 @@ public class email {
     }
 
 
+    public void escriuMail(String mail){
+
+        Config c = new Config();
+
+        try {
+            BufferedWriter bwr = new BufferedWriter(new FileWriter(new File(c.fitxerFinal)));
+
+            bwr.write(mail);
+            bwr.close();
+
+        }catch (IOException e){
+            e.printStackTrace();
+
+        }
+
+    }
+
+
+
 
     public String composaEmail() {
 
@@ -33,6 +56,7 @@ public class email {
 
         return textmail;
     }
+
 
 
     public String pintaNoms(){
@@ -73,8 +97,15 @@ public class email {
 
 
     public void setBug(String bug) {
+
         this.bug = bug;
     }
 
+
+
+    public void addPaquetALlista( paquet p){
+
+        this.paquets.add(p);
+    }
 
 }

@@ -28,4 +28,14 @@ public class paquet {
     public void setNomPaquet(String nomPaquet) {
         this.nomPaquet = nomPaquet;
     }
+
+    public String toString(){
+
+        String cadena = "["+ this.nomPaquet + " " + this.nameUser+ " " +this.emailUser + "]";
+
+        return cadena;
+
+    }
+
+
 }

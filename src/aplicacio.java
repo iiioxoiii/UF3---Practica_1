@@ -1,5 +1,5 @@
 import java.io.*;
-import java.util.concurrent.ExecutionException;
+import java.util.ArrayList;
 
 public class aplicacio {
 
@@ -10,43 +10,116 @@ public class aplicacio {
         aplicacio inici = new aplicacio();
         try {
             inici.go(args[0]);
-
         }catch (Exception e){
-            System.out.println("Error en pas de paràmetre");
+            e.printStackTrace();
         }
     }
 
 
     public void go(String BugId){
 
+        //1. S'instancia l'objecte que escriurà el correu
         email e = new email();
-        llistaPaquets ll = new llistaPaquets();
+
+        //2. Es passa el num BugId al email
+        e.setBug(BugId);
 
 
-        //1)Es quen els noms de paquet associats al num bug
-        String [] paquetsTrobats = cercaPaquets(BugId);
-        if(paquetsTrobats[0].equals("<unknow>")){
+        //3. S'instancia l'objecte on desar els paquets trobats
+        controller ll = new controller();
+
+
+        //4. Es crea una llista amb tots els paquets, noms i users
+        ll.omplirLlista();
+
+        //4. Es cerquen els noms de paquet associats al num bug
+        // i es posen en un array
+        String [] nomsPaquetsTrobats = ll.cercaPaquets(BugId);
+
+        //5. Es mira si hi ha coincidència amb algí paquet.
+        //Si no hi ha cap paquet amb el nom es pinta <unknow>
+
+        if(nomsPaquetsTrobats[0].equals("<unknow>")) {
             System.out.println("404 - Bug no trobat");
+        } else {
+
+            for (paquet p : ll.getLlista()) {
+
+                System.out.println(p.toString());
+                for (int i = 0; i < nomsPaquetsTrobats.length; i++) {
+                    if(p.getNomPaquet().equals(nomsPaquetsTrobats[i]));
+                    e.addPaquetALlista(p);
+                }
+            }
+
+            e.pintaNoms();
+            e.pintaEmails();
+            e.pintaNomsPaquets();
+            e.escriuMail(e.composaEmail());
+
         }
-
-        //2)Es passa l'objecte BugId al email
-            e.setBug(BugId);
-
-
-        //3)Es crea llista de tots els paquets
-            ll.omplirLlista();
-
-        //3)Es cerca la info dels paquets referenciat al num del bub
-        for (int i = 1; i < paquetsTrobats.length; i++) {
-            ll.cercaPaquet(paquetsTrobats[i]);
-        }
-
-
 
     }
 
 
 
+
+    //Entra un nom de paquet i cerca en el fitxer i extreu un array amb nom i email
+
+    public String [] cercaDadesPaquet(String nom){
+
+        String [] nomYemail = {"<unknow>"};
+
+        File file = new File (new Config().packageMaintainer);
+
+        try{
+
+            BufferedReader br = new  BufferedReader(new FileReader(file));
+
+            while (br.readLine() != null) {
+                String linia = br.readLine();
+                String nomPaquetTemp = nomPaquet(linia);
+
+
+
+                if(nomPaquetTemp.equals(nom)){
+                    System.out.println("JOOOO");
+                }
+            }
+
+            br.close();
+
+            return nomYemail;
+
+        }catch (IOException e){
+            System.out.println("Error en accés al fitxer");
+            e.printStackTrace();
+        }
+
+
+        return nomYemail;
+    }
+
+
+
+
+    public String nomPaquet(String linia){
+        String [] nomsPaquets = linia.split(";");
+
+        return nomsPaquets[0];
+    }
+
+    public String nomUsuari(String linia){
+        String [] nomsPaquets = linia.split(";");
+
+        return nomsPaquets[1];
+    }
+
+    public String nomEmail(String linia){
+        String [] nomsPaquets = linia.split(";");
+
+        return nomsPaquets[2];
+    }
 
 
 
@@ -57,81 +130,5 @@ public class aplicacio {
 
         return nomsPaquets;
     }
-
-
-
-    /**Cerca en rcBugPackage si hi ha una incidència amb el número passat com argument
-     * d'entrada. En el cas de no haver cap línia refenciada retorna un sol element
-     * anomenat <unknow>
-     * @param numBug el número de bug
-     * @return un array amb els noms dels paquets refenciats
-     */
-    public String [] cercaPaquets(String numBug){
-
-        String [] nomPaquets = {"<unknow>"};
-
-        File file = new File (new Config().rcBugPackage);
-
-        try{
-
-            BufferedReader br = new  BufferedReader(new FileReader(file));
-
-            boolean trobat = false;
-
-            while (br.ready() || !trobat) {
-                String linia = br.readLine();
-                String numTemp = numeroBug(linia);
-
-                if(numBug.equals(numTemp)){
-
-                    nomPaquets= nomPaquets(linia);
-
-                    trobat = true;
-                }
-            }
-
-            br.close();
-
-            return nomPaquets;
-
-        }catch (IOException e){
-            System.out.println("Error en accés al fitxer");
-            e.printStackTrace();
-        }
-
-        return nomPaquets;
-    }
-
-
-
-
-
-
-    /**retorna el nom del paquet
-     * @param linia sencera
-     * @return nom del paquet
-     */
-    public static String [] nomPaquets(String linia){
-        String [] paraules;
-        paraules = linia.split(";");
-
-        paraules[1]=paraules[1].replaceAll("\\s+","");
-        String [] nomPaquets =  paraules[1].split(",");
-
-        return nomPaquets;
-    }
-
-
-
-
-
-    public static String numeroBug(String linia){
-        String [] paraules;
-        paraules = linia.split(";");
-        paraules[0]=paraules[0].replaceAll("\\s+","");
-
-        return paraules[0];
-    }
-
 
 }
