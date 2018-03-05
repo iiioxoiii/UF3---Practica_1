@@ -41,6 +41,12 @@ public class aplicacio {
 
         if(nomsPaquetsTrobats[0].equals("<unknow>")) {
             System.out.println("404 - Bug no trobat");
+
+            e.escriuMail(e.composaEmailError());
+
+
+
+
         } else {
 
             for (paquet p : ll.getLlista()) {

@@ -3,11 +3,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
+
 
 public class email {
-
-
 
     private final String remitent = "owner@bugs.debian.org";
 
@@ -57,6 +55,18 @@ public class email {
         return textmail;
     }
 
+
+    public String composaEmailError(){
+        String textmail = "From: " + this.remitent +"\n"+
+                "To: <unknow>" + "\n" +
+                "Dear <unknow>"+ "\n" +
+                "You have a new bug:" + "\n" +
+                " - RC bug number " + this.bug + "\n" +
+                "Something not work." + "\n" +
+                "Cheers." + "\n";
+
+        return textmail;
+    }
 
 
     public String pintaNoms(){
