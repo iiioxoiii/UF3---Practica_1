@@ -23,7 +23,7 @@ public class email {
 
     public void escriuMail(String mail){
 
-        Config c = new Config();
+        config c = new config();
 
         try {
             BufferedWriter bwr = new BufferedWriter(new FileWriter(new File(c.fitxerFinal)));
@@ -40,9 +40,7 @@ public class email {
 
 
 
-
-    public String composaEmail() {
-
+    public String emailValidat() {
 
         String textmail = "From: " + this.remitent +"\n"+
                 "To: " + pintaEmails() + "\n" +
@@ -56,17 +54,15 @@ public class email {
     }
 
 
-    public String composaEmailError(){
-        String textmail = "From: " + this.remitent +"\n"+
-                "To: <unknow>" + "\n" +
-                "Dear <unknow>"+ "\n" +
-                "You have a new bug:" + "\n" +
+    public String emailError(){
+        String textmail = "No hi ha dades associades al bug: "+ "\n"+
                 " - RC bug number " + this.bug + "\n" +
                 "Something not work." + "\n" +
                 "Cheers." + "\n";
 
         return textmail;
     }
+
 
 
     public String pintaNoms(){

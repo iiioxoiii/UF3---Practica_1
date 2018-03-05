@@ -13,7 +13,7 @@ public class controller {
 
 
     public void escriuMail(String mail){
-        Config c = new Config();
+        config c = new config();
 
         try {
             BufferedWriter bwr = new BufferedWriter(new FileWriter(new File(c.fitxerFinal)));
@@ -73,7 +73,7 @@ public class controller {
 
         String [] nomPaquets = {"<unknow>"};
 
-        File file = new File (new Config().rcBugPackage);
+        File file = new File (new config().rcBugPackage);
 
         try{
 
@@ -110,7 +110,7 @@ public class controller {
 
     public void omplirLlista() {
 
-        Config c = new Config();
+        config c = new config();
 
         File f = new File(c.packageMaintainer);
 
